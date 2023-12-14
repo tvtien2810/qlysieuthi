@@ -94,160 +94,19 @@ add constraint FK_cthd_hd foreign key(MaDon) references DonHang(MaDon);
 alter table ChiTietDonHang
 add constraint FK_cthd_sp foreign key(MaSP) references SanPham(MaSP);
 
-/*Phân quyền*/
-insert into PhanQuyen values ('Admin');
-insert into PhanQuyen values ('Member');
 
 
 
 select * from PhanQuyen;
 select * from TaiKhoan; 
-select * from LoaiHang where TenLoai <> 'Thùng rác';
+select * from LoaiHang ;
 select * from NhaCungCap;	
 select * from SanPham
 select * from TinTuc
-order by MaSP DESC
- where MaLoai='2';
 
 select * from DonHang;
-select * 
-from DonHang,ChiTietDonHang 
-where DonHang.MaDon=ChiTietDonHang.MaDon and DonHang.MaDon = 1 
+ 
 
 select * from TinTuc
 
-/*
-select * from khachhang where SDT <> '0'
-
-Hàm kiểm tra tồn tại
-IF EXISTS (SELECT * FROM ct_phieuxuat Where MaSP = 'EX') 
-BEGIN
-	Update ct_kho SET Soluong = 
-	 ((select 'Soluongnhap'=Sum(SoLuong) from ct_phieunhap where MaSP = 'EX') - 
-	 (select 'Soluongxuat' =Sum(SoLuong) from ct_phieuxuat where MaSP = 'EX')) 
-	 Where MaSP = 'EX'
-END
-ELSE 
-	 Update ct_kho SET Soluong = (select 'Soluongnhap'=Sum(SoLuong) from ct_phieunhap where MaSP = 'EX') Where MaSP = 'EX'
-
-
--- Hàm kiểm tra tồn tại
-IF EXISTS (SELECT * FROM ct_phieunhap Where MaPN = 4 AND MaSP = 'VS') 
-BEGIN
-	PRINT 'DA TON TAI'
-END
-ELSE INSERT INTO ct_phieunhap(MaPN,MaSP,Soluong,DonGiaNhap) VALUES ('4','VS','20','3000000')
-
-
-Update ct_kho SET 
-
-Soluong=
-(select Sum(SoLuong) as 'Soluongnhap'
-from ct_phieunhap
-where MaSP = 'EX') 
--
-(select Sum(SoLuong) as 'Soluongxuat'
-from ct_phieuxuat
-where MaSP = 'EX') 
-from ct_kho
-Where MaSP = 'EX'
-
-Select Soluong From ct_kho Where MaSP = 'EX' 
-
-delete from kho where MaKho = '1'	
-
-select * from ct_hoadon where MaHoaDon = '1'
-
-select SUM(TongTien) as 'TongTien'
-from hoadon 
-where Ngay between '2021-02-07' and '2021-02-09' 
-
-SELECT 'TongTien'=SUM(TongTien) FROM hoadon WHERE Ngay between '2021-02-07' and '2021-02-07'
-
-select TenSP,DonGia,'SoLuong'=SUM(SoLuong),'TongTien'=(DonGia * SUM(SoLuong))
-from ct_hoadon,hoadon,sanpham  
-where ct_hoadon.MaHoaDon = hoadon.MaHoaDon and sanpham.MaSP = ct_hoadon.MaSP and hoadon.Ngay between '2021-02-07' and '2021-02-07' 
-Group by TenSP,DonGia
-
-select 'SoLuong'=SUM(SoLuong), 'TongTien'=SUM(TongTien)
-from ct_hoadon,hoadon
-where ct_hoadon.MaHoaDon = hoadon.MaHoaDon and Ngay between '2021-02-07' and '2021-02-07' 
-
---tính tổng hoá đơn theo ngày
-select * , 'tong'= (select 'TONG'=sum(TongTien) from hoadon where  Ngay between '2021-05-29' and '2021-05-30') 
-from hoadon
-where  Ngay between '2021-02-07' and '2021-05-29'
-
-select MaHoaDon,Ngay,SDT,TongTien,Username,GhiChu
-FROM hoadon
-where Ngay between '2021-02-07' and '2021-05-29'
- 
-select 'TONG' = sum(TongTien) from hoadon where  Ngay between '2021-02-07' and '2021-02-09' 
-group by MaHoaDon,Ngay,SDT,TongTien,Username,GhiChu
-
-UPDATE ct_phieuxuat SET MaPX = '1',MaSP ='EX',SoLuong = '4',DonGia = '40000' WHERE MaCTPX = '1'
-
-Select 'TongTien'=sum(DonGia) 
-From ct_hoadon 
-Where MaHoaDon = '12' 
-
-select 'SoLuong'=SUM(SoLuong)
-from ct_hoadon
-where MaHoaDon = '12'
-
-
-select 'DonGia'=sum(DonGia)
-from ct_hoadon
-where MaHoaDon = '12'
-
-
-UPDATE hoadon 
-SET TongTien = 
-(select 'TongTien'=sum(SoLuong * DonGia)
-from ct_hoadon
-where MaHoaDon = '12'
-Group by MaHoaDon)
-where MaHoaDon = '12'
-
---Tính tổng chi tiết hoá đơn từng sản phẩm theo ngày
-select TenSP, GiaBan, 'SoLuong'=SUM(SoLuong), 'TongTien'=(SUM(SoLuong) * GiaBan) 
-from ct_hoadon,hoadon,sanpham  
-where ct_hoadon.MaHoaDon = hoadon.MaHoaDon and sanpham.MaSP = ct_hoadon.MaSP and Ngay between '2021-05-29' and '2021-05-30' 
-Group by TenSP,GiaBan
-
-select TenSP, GiaBan, 'SoLuong'=SUM(SoLuong), 'TongTien'=(SUM(SoLuong) * GiaBan),
-"TongĐG" = (SELECT "TONGGG"= sum(TongTien)
-	FROM "dbo"."hoadon" hoadon
-	WHERE Ngay between '2021-05-29' and '2021-05-30' ),
-"TongCG" = (SELECT "TONGCG"= sum(ThanhTien)
-	 FROM ct_hoadon,hoadon
-	 WHERE ct_hoadon.MaHoaDon = hoadon.MaHoaDon and Ngay between '2021-05-29' and '2021-05-30'), 
-"TongSL" = (SELECT "TONGSL"= sum(SoLuong)
-            FROM hoadon,ct_hoadon
-            WHERE ct_hoadon.MaHoaDon = hoadon.MaHoaDon and Ngay between '2021-05-29' and '2021-05-30'), 
-"TongGG" = (
-	(SELECT "TONGCG"= sum(ThanhTien)
-	 FROM ct_hoadon,hoadon
-	 WHERE ct_hoadon.MaHoaDon = hoadon.MaHoaDon and Ngay between '2021-05-29' and '2021-05-30')
--
-	(SELECT "TONGGG"= sum(TongTien)
-	FROM "dbo"."hoadon" hoadon
-	WHERE Ngay between '2021-05-29' and '2021-05-30' ))
-from ct_hoadon,hoadon,sanpham  
-where ct_hoadon.MaHoaDon = hoadon.MaHoaDon and sanpham.MaSP = ct_hoadon.MaSP and Ngay between '2021-05-29' and '2021-05-30'  
-Group by TenSP,GiaBan
-
---Lấy tổng tiền báo cáo
-select DISTINCT 'SoLuong' = sum(ct_hoadon.ThanhTien),'TongTien'= (select 'TongTien'= sum(TongTien) from hoadon where Ngay between '09/06/2021' and '09/06/2021')
-from ct_hoadon,hoadon
-where ct_hoadon.MaHoaDon = hoadon.MaHoaDon and Ngay between '09/06/2021' and '09/06/2021'
-
---Lấy giảm tiền báo cáo
-select DISTINCT 'SoLuong' = sum(ct_hoadon.ThanhTien),'TongTien'= sum(ct_hoadon.ThanhTien) - (select 'TongTien'= sum(TongTien) from hoadon where Ngay between '09/06/2021' and '09/06/2021')
-from ct_hoadon,hoadon
-where ct_hoadon.MaHoaDon = hoadon.MaHoaDon and Ngay between '09/06/2021' and '09/06/2021'
-*/
-
-/*Ràng buộc ĐƠN HÀNG*/
-alter table Course
-add constraint FK_c_u foreign key(LecturerId) references AspNetUsers(Id);
+_u foreign key(LecturerId) references AspNetUsers(Id);
