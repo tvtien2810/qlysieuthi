@@ -109,4 +109,4 @@ select * from DonHang;
 
 select * from TinTuc
 
-_u foreign key(LecturerId) references AspNetUsers(Id);
+
